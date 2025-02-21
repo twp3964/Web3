@@ -40,7 +40,7 @@ API_KEY = "a90cb61f-ea65-48c8-9002-a6af4c10e472"
 daily_CP_TF = get_coinalyze_data("ohlcv-history", "BTCUSD.A", API_KEY)
 
 # 2) Daily Open Interest (OI) for Traditional Futures
-daily_OI_TF = get_coinalyze_data("open-interest-history", "BTCUSDT.A", API_KEY)
+daily_OI_TF = get_coinalyze_data("open-interest-history", "BTCUSD_PERP.A", API_KEY)
 
 # 3) Daily Closing Price(CP) for Perpetual Contracts (PERP):
 daily_CP_PERP = get_coinalyze_data("ohlcv-history", "BTCUSD_PERP.A", API_KEY)
