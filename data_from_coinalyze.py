@@ -1,5 +1,10 @@
 import requests
 from datetime import datetime, timedelta, timezone
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from .env file
+load_dotenv()
 
 
 def get_coinalyze_data(
@@ -34,19 +39,23 @@ def get_coinalyze_data(
     return response.json()
 
 
-API_KEY = "a90cb61f-ea65-48c8-9002-a6af4c10e472"
+COINALYZE_API_KEY = os.getenv("COINALYZE_API_KEY")
 
 # 1) Daily Closing Price(CP) for Traditional Futures(TF)
-daily_CP_TF = get_coinalyze_data("ohlcv-history", "BTCUSD.A", API_KEY)
+daily_CP_TF = get_coinalyze_data("ohlcv-history", "BTCUSD.A", COINALYZE_API_KEY)
 
 # 2) Daily Open Interest (OI) for Traditional Futures
-daily_OI_TF = get_coinalyze_data("open-interest-history", "BTCUSD_PERP.A", API_KEY)
+daily_OI_TF = get_coinalyze_data(
+    "open-interest-history", "BTCUSD_PERP.A", COINALYZE_API_KEY
+)
 
 # 3) Daily Closing Price(CP) for Perpetual Contracts (PERP):
-daily_CP_PERP = get_coinalyze_data("ohlcv-history", "BTCUSD_PERP.A", API_KEY)
+daily_CP_PERP = get_coinalyze_data("ohlcv-history", "BTCUSD_PERP.A", COINALYZE_API_KEY)
 
 # 4) PERP Open Interest (OI)
-daily_OI_PERP = get_coinalyze_data("open-interest-history", "BTCUSD_PERP.A", API_KEY)
+daily_OI_PERP = get_coinalyze_data(
+    "open-interest-history", "BTCUSD_PERP.A", COINALYZE_API_KEY
+)
 
 # Print the results
 print("\nNormal Futures Close Price:", daily_CP_TF)
