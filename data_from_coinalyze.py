@@ -1,10 +1,6 @@
 import requests
 from datetime import datetime, timedelta, timezone
-from dotenv import load_dotenv
-import os
-
-# Load environment variables from .env file
-load_dotenv()
+import config
 
 
 def get_coinalyze_data(
@@ -39,7 +35,7 @@ def get_coinalyze_data(
     return response.json()
 
 
-COINALYZE_API_KEY = os.getenv("COINALYZE_API_KEY")
+COINALYZE_API_KEY = config.COINALYZE_API_KEY
 
 # 1) Daily Closing Price(CP) for Traditional Futures(TF)
 daily_CP_TF = get_coinalyze_data("ohlcv-history", "BTCUSD.A", COINALYZE_API_KEY)
