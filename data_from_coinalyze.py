@@ -28,8 +28,8 @@ def get_coinalyze_data(
     )
 
     # Include convert_to_usd if true
-    if endpoint == "open-interest-history":
-        url += "&convert_to_usd=true"
+    # if endpoint == "open-interest-history":
+    #     url += "&convert_to_usd=true"
 
     response = requests.get(url)
     return response.json()
