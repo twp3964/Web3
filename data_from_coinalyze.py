@@ -2,6 +2,8 @@ import requests
 from datetime import datetime, timedelta, timezone
 import config
 
+COINALYZE_API_KEY = config.COINALYZE_API_KEY
+
 
 def get_coinalyze_data(
     endpoint,
@@ -35,26 +37,49 @@ def get_coinalyze_data(
     return response.json()
 
 
-COINALYZE_API_KEY = config.COINALYZE_API_KEY
+# Sum up the Open Interest (OI) for all PERP symbols
+def calculate_total_perp_oi(perp_data):
+    total_perp_oi = {}
+
+    for entry in perp_data:
+        for record in entry["history"]:
+            timestamp = record["t"]
+            if timestamp not in total_perp_oi:
+                total_perp_oi[timestamp] = 0
+
+            total_perp_oi[timestamp] += record["o"]  # Only summing 'o'
+
+    return [{"t": t, "total_OI": oi} for t, oi in total_perp_oi.items()]
+
 
 # 1) Daily Closing Price(CP) for Traditional Futures(TF)
 daily_CP_TF = get_coinalyze_data("ohlcv-history", "BTCUSD.A", COINALYZE_API_KEY)
 
 # 2) Daily Open Interest (OI) for Traditional Futures
-daily_OI_TF = get_coinalyze_data(
-    "open-interest-history", "BTCUSD_PERP.A", COINALYZE_API_KEY
+futures_symbols = "BTCUSD.A, BTCUSDT.A, BTCUSDC.A, BTCUSD_PERP.A, BTCUSDT_PERP.A, BTCUSDC_PERP.A, BTCUSDT.B, BTCUSDC.B, BTCUSD_PERP.B, BTCUSDT_PERP.B, BTCUSDC_PERP.B, BTCUSDT.C, BTCUSD_PERP.C, BTCUSDT_PERP.C, BTCDOMUSDT_PERP.A"
+daily_OI_Futures = get_coinalyze_data(
+    "open-interest-history", futures_symbols, COINALYZE_API_KEY
 )
+
 
 # 3) Daily Closing Price(CP) for Perpetual Contracts (PERP):
 daily_CP_PERP = get_coinalyze_data("ohlcv-history", "BTCUSD_PERP.A", COINALYZE_API_KEY)
 
 # 4) PERP Open Interest (OI)
+perp_symbols = "BTCUSD_PERP.A,BTCUSDC_PERP.A"
 daily_OI_PERP = get_coinalyze_data(
-    "open-interest-history", "BTCUSD_PERP.A", COINALYZE_API_KEY
+    "open-interest-history", perp_symbols, COINALYZE_API_KEY
 )
 
 # Print the results
 print("\nNormal Futures Close Price:", daily_CP_TF)
-print("\nNormal Futures OI:", daily_OI_TF)
+print("\nNormal Futures OI:", daily_OI_Futures)
 print("\nPERP Close Price:", daily_CP_PERP)
 print("\nPERP OI:", daily_OI_PERP)
+
+
+# Calculate total PERP OI
+total_perp_oi = calculate_total_perp_oi(daily_OI_PERP)
+
+# Print the result
+print("\nTotal PERP OI:", total_perp_oi)

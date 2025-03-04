@@ -1,5 +1,6 @@
 import requests
 from datetime import datetime, timedelta, timezone
+import config
 
 
 def get_coinalyze_data(
@@ -34,7 +35,7 @@ def get_coinalyze_data(
     return response.json()
 
 
-API_KEY = "a90cb61f-ea65-48c8-9002-a6af4c10e472"
+API_KEY = config.COINALYZE_API_KEY
 
 # 1) Daily Closing Price(CP) for Traditional Futures(TF)
 daily_CP_TF = get_coinalyze_data("ohlcv-history", "BTCUSD.A", API_KEY)
