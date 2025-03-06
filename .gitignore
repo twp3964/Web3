@@ -3,3 +3,4 @@ bitcoin_OI_Test.py
 missing_symbols.log
 requirements.txt
 test/
+__pycache__/
