@@ -2,3 +2,4 @@ env/
 bitcoin_OI_Test.py
 missing_symbols.log
 requirements.txt
+test/
