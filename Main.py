@@ -29,27 +29,27 @@ if __name__ == '__main__':
 
     print(f"✅ Stock data saved to {excel_filename}. Now uploading to API Rows...")
 
-    # API Rows (Replace with your API Rows table URL)
-    API_ROWS_URL = "https://api.apirows.com/v1/sheets/YOUR_SHEET_ID/rows"  # ✅ Fixed URL
-    API_ROWS_HEADERS = {
-        "Authorization": "Bearer YOUR_ROWS_API_KEY_HERE",
-        "Content-Type": "application/json"
-    }
+    # # API Rows (Replace with your API Rows table URL)
+    # API_ROWS_URL = "https://api.apirows.com/v1/sheets/YOUR_SHEET_ID/rows"  # ✅ Fixed URL
+    # API_ROWS_HEADERS = {
+    #     "Authorization": "Bearer YOUR_ROWS_API_KEY_HERE",
+    #     "Content-Type": "application/json"
+    # }
 
-    # ---------------- PUSH DATA TO API ROWS ----------------
-    df_combined = df.reset_index()
-    df_combined.columns = ["Date", "Close Price"]  # Rename index column
-    df_combined["Date"] = df_combined["Date"].astype(str)  # Convert dates to string
-    data_to_push = df_combined.to_dict(orient="records")  # Convert DataFrame to JSON
+    # # ---------------- PUSH DATA TO API ROWS ----------------
+    # df_combined = df.reset_index()
+    # df_combined.columns = ["Date", "Close Price"]  # Rename index column
+    # df_combined["Date"] = df_combined["Date"].astype(str)  # Convert dates to string
+    # data_to_push = df_combined.to_dict(orient="records")  # Convert DataFrame to JSON
 
-    try:
-        response = requests.post(API_ROWS_URL, json=data_to_push, headers=API_ROWS_HEADERS)
+    # try:
+    #     response = requests.post(API_ROWS_URL, json=data_to_push, headers=API_ROWS_HEADERS)
 
-        if response.status_code == 200:
-            print("✅ Data successfully uploaded to API Rows!")
-        else:
-            print(f"❌ Failed to upload data. Status Code: {response.status_code}")
-            print(f"Response: {response.text}")
+    #     if response.status_code == 200:
+    #         print("✅ Data successfully uploaded to API Rows!")
+    #     else:
+    #         print(f"❌ Failed to upload data. Status Code: {response.status_code}")
+    #         print(f"Response: {response.text}")
 
-    except requests.exceptions.RequestException as e:
-        print(f"❌ Request failed: {e}")
+    # except requests.exceptions.RequestException as e:
+    #     print(f"❌ Request failed: {e}")
