@@ -2,6 +2,7 @@ import json
 import pandas as pd
 import numpy as np
 import requests
+import config  # Import the config file
 
 # Load Excel file without automatic headers
 excel_filename = "merged_data.xlsx"
@@ -11,10 +12,8 @@ df = pd.read_excel(excel_filename, header=None)  # Read without headers
 df.columns = df.iloc[0]  # Assign first row as headers
 df = df[1:].reset_index(drop=True)  # Remove first row from data
 
-# Drop the first column (if it's Timestamp)
-df = df.drop(columns=["Timestamp"], errors="ignore")
-# Drop the first column (if it's Timestamp)
-df = df.drop(columns=["Unnamed: 0"], errors="ignore")
+# Drop unnecessary columns
+df = df.drop(columns=["Timestamp", "Unnamed: 0"], errors="ignore")
 
 # Select first two data rows (excluding column names)
 df = df.iloc[:2]
@@ -26,23 +25,18 @@ for col in df.select_dtypes(include=["datetime64", "object"]).columns:
 # Replace NaN and infinite values with None
 df = df.replace([np.nan, np.inf, -np.inf], None)
 
-
 # Convert DataFrame to JSON (list of lists format)
 data_to_push = {"values": [df.columns.tolist()] + df.values.tolist()}  # Include headers
 
 # Print for debugging
 print(json.dumps(data_to_push, indent=2))
 
-
 # API details
-SPREADSHEET_ID = "4gLJ1FDpsOkZhNWBETlIrv"  # Replace with your actual spreadsheet ID
-TABLE_ID = "46e19e71-799d-4a03-a91a-470c0abba8f4"  # Replace with your actual table ID
-RANGE = "A1:G3"
-API_URL = f"https://api.rows.com/v1/spreadsheets/{SPREADSHEET_ID}/tables/{TABLE_ID}/values/{RANGE}:append"
+API_URL = f"https://api.rows.com/v1/spreadsheets/{config.SPREADSHEET_ID}/tables/{config.TABLE_ID}/values/{config.RANGE}:append"
 
 # API Headers
 HEADERS = {
-    "Authorization": "Bearer rows-1esfw14lTgg20nbKC0hLsdShm9mRljSWR4Ut0YHsAjTB",  # Replace with your actual API token
+    "Authorization": f"Bearer {config.API_TOKEN}",
     "Content-Type": "application/json",
 }
 
