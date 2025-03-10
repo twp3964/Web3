@@ -1,0 +1,9 @@
+env/
+*.pyc
+__pycache__/
+
+bitcoin_OI_Test.py
+missing_symbols.log
+requirements.txt
+test/
+config.py
