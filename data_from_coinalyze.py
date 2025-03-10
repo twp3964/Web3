@@ -1,11 +1,12 @@
 import requests
 from tqdm import tqdm
+import config
 import time
 import pandas as pd
 from datetime import datetime, timedelta, timezone
 
 
-COINALYZE_API_KEY = "dc429e6f-b506-49a3-b2b3-15e55291b5b4"
+COINALYZE_API_KEY = config.COINALYZE_API_KEY
 
 
 def get_coinalyze_data(
@@ -174,3 +175,5 @@ merged_excel_filename = "merged_data.xlsx"
 merged_df.to_excel(merged_excel_filename, index=False)
 
 print(f"✅ Merged data saved to {merged_excel_filename}")
+
+
