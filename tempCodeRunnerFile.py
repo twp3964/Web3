@@ -1,25 +1,25 @@
-# API details
-# SPREADSHEET_ID = "4gLJ1FDpsOkZhNWBETlIrv"  # Replace with your actual spreadsheet ID
-# TABLE_ID = "46e19e71-799d-4a03-a91a-470c0abba8f4"  # Replace with your actual table ID
-# RANGE = "A1:H3"
-# API_URL = f"https://api.rows.com/v1/spreadsheets/{SPREADSHEET_ID}/tables/{TABLE_ID}/values/{RANGE}:append"
 
-# # API Headers
-# HEADERS = {
-#     "Authorization": "Bearer rows-1esfw14lTgg20nbKC0hLsdShm9mRljSWR4Ut0YHsAjTB",  # Replace with your actual API token
-#     "Content-Type": "application/json",
-# }
 
-# # Upload data
-# try:
-#     response = requests.post(API_URL, json=data_to_push, headers=HEADERS)
+# Convert to DataFrame
+df = pd.DataFrame(data)
 
-#     if response.status_code == 200:
-#         print("✅ Data successfully appended to Rows Spreadsheet!")
-#         print(response.json())  # Print API response for debugging
-#     else:
-#         print(f"❌ Failed to append data. Status Code: {response.status_code}")
-#         print(f"Response: {response.text}")
+# Keep only the first two rows
+df = df.iloc[:2]
 
-# except requests.exceptions.RequestException as e:
-#     print(f"❌ Request failed: {e}")
+# Save as Excel
+df.to_excel("coinalyze_data.xlsx", index=False)
+
+print("✅ Data successfully converted and saved!")
+
+# Load both Excel files
+coinalyze_df = pd.read_excel("coinalyze_data.xlsx")
+stock_df = pd.read_excel("stock_prices.xlsx")
+
+# Merge both DataFrames (side by side)
+merged_df = pd.concat([coinalyze_df, stock_df], axis=1)
+
+# Save the merged data to a new Excel file
+merged_excel_filename = "merged_data.xlsx"
+merged_df.to_excel(merged_excel_filename, index=False)
+
+print(f"✅ Merged data saved to {merged_excel_filename}")

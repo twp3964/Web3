@@ -7,3 +7,4 @@ missing_symbols.log
 requirements.txt
 test/
 config.py
+*.json

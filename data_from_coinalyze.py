@@ -138,10 +138,12 @@ for i in range(len(perp_oi)):
     )
 
     # Fetch values
-    perp_oi_val = perp_oi[i]["OI"]
-    normal_oi_val = normal_oi[i]["OI"]
-    normal_close_price = normal_close[0]["history"][i]["c"]
-    perp_close_price = perp_close[0]["history"][i]["c"]
+    perp_oi_val = round(perp_oi[i]["OI"], 2)  # Round to 2 decimal places
+    normal_oi_val = round(normal_oi[i]["OI"], 2)
+    normal_close_price = round(
+        normal_close[0]["history"][i]["c"], 0
+    )  # Round to nearest integer
+    perp_close_price = round(perp_close[0]["history"][i]["c"], 0)
 
     # Append row data
     data.append(
@@ -150,30 +152,30 @@ for i in range(len(perp_oi)):
             "Date": date,
             "PERP OI (USD)": perp_oi_val,
             "NORMAL OI (USD)": normal_oi_val,
-            "NORMAL Close Price (USD)": normal_close_price,
-            "PERP Close Price (USD)": perp_close_price,
+            "NORMAL Close Price (USD)": f"{normal_close_price:,}",  # Format with commas
+            "PERP Close Price (USD)": f"{perp_close_price:,}",
         }
     )
 
-# Convert to DataFrame
+# Convert data to DataFrame
 df = pd.DataFrame(data)
 
 # Save as Excel
 df.to_excel("coinalyze_data.xlsx", index=False)
-
-print("Data successfully converted and saved!")
+print("✅ Coinalyze data saved!")
 
 # Load both Excel files
 coinalyze_df = pd.read_excel("coinalyze_data.xlsx")
 stock_df = pd.read_excel("stock_prices.xlsx")
 
-# Merge both DataFrames (side by side)
+# Trim stock_df to match coinalyze_df row count (only keep first two rows)
+stock_df = stock_df.iloc[: len(coinalyze_df)]
+
+# Merge DataFrames (side by side)
 merged_df = pd.concat([coinalyze_df, stock_df], axis=1)
 
-# Save the merged data to a new Excel file
+# Save merged data
 merged_excel_filename = "merged_data.xlsx"
 merged_df.to_excel(merged_excel_filename, index=False)
 
-print(f"✅ Merged data saved to {merged_excel_filename}")
-
-
+print(f"✅ Merged data saved as '{merged_excel_filename}'!")
