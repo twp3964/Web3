@@ -133,9 +133,7 @@ for i in range(len(perp_oi)):
     timestamp = perp_oi[i]["t"]
 
     # Convert timestamp to readable date
-    date = datetime.fromtimestamp(timestamp, tz=timezone.utc).strftime(
-        "%Y-%m-%d %H:%M:%S"
-    )
+    date = datetime.fromtimestamp(timestamp, tz=timezone.utc).strftime("%Y-%m-%d")
 
     # Fetch values
     perp_oi_val = round(perp_oi[i]["OI"], 2)  # Round to 2 decimal places
@@ -148,7 +146,7 @@ for i in range(len(perp_oi)):
     # Append row data
     data.append(
         {
-            "Timestamp": timestamp,
+            # "Timestamp": timestamp,
             "Date": date,
             "PERP OI (USD)": perp_oi_val,
             "NORMAL OI (USD)": normal_oi_val,
